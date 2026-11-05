@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+//oztia puta chaval
 
 public class BacktrackingUADA {
     private List<Solucion> mejoresSoluciones = new ArrayList<>();
@@ -31,8 +32,7 @@ public class BacktrackingUADA {
                     int bateriaRestante = bateriaActual - bateriaGastada;
 
                     if (bateriaRestante > 0) {
-                        int tiempoMovimiento = calcularTiempoSegunMovimiento(aristaActual.getTiempoBase(), movimiento);
-                        int taNuevo = tiempoAcumulado + tiempoMovimiento;
+                        int taNuevo = tiempoAcumulado + aristaActual.getTiempoBase();
 
                         if (taNuevo >= cotaInferior) {
                             indiceTransporte++;
@@ -96,8 +96,6 @@ public class BacktrackingUADA {
     private int funcBateriaGastada(int tiempoBase, TipoMovimiento mov) {
         return 0;
     }
-    private int calcularTiempoSegunMovimiento(int tiempoBase, TipoMovimiento mov) {
-        return 0;
-    }
+
 }
 
