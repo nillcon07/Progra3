@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+//oztia puta chaval
 
 public class BacktrackingUADA {
     private List<Solucion> mejoresSoluciones = new ArrayList<>();
