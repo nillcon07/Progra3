@@ -1,3 +1,5 @@
+package modelo;
+
 public class Vertice {
     private String nombre;
     private int x;

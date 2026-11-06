@@ -1,3 +1,5 @@
+package modelo;
+
 public class Movimiento {
     private Vertice origen;
     private Vertice destino;
