@@ -14,19 +14,16 @@ public class Vertice {
     private int prohibido;
     private boolean visitado;
 
-    public Vertice(String nombre, int x, int y, boolean esAula, boolean obligatorio, int prohibido) {
+    public Vertice(String nombre, int x, int y, int numeroAula,
+                   boolean obligatorio, int prohibido) {
         this.nombre = nombre;
         this.x = x;
         this.y = y;
-        this.esAula = esAula;
+        this.numeroAula = numeroAula;
+        this.esAula = numeroAula != 0;
         this.obligatorio = obligatorio;
         this.prohibido = prohibido;
         this.visitado = false;
-    }
-
-    public Vertice(String nombre, int x, int y, int numeroAula, boolean obligatorio, int prohibido) {
-        this(nombre, x, y, numeroAula != 0, obligatorio, prohibido);
-        this.numeroAula = numeroAula;
     }
 
     public int getNumeroAula() { return numeroAula; }
@@ -46,10 +43,8 @@ public class Vertice {
         if (!esAula)
             return 0;
         int sumaDigitos = 0;
-        for (char c : (numeroAula > 0 ? String.valueOf(numeroAula) : nombre).toCharArray()) {
-            if (Character.isDigit(c)) {
-                sumaDigitos += Character.getNumericValue(c);
-            }
+        for (char c : (String.valueOf(numeroAula)).toCharArray()) {
+            sumaDigitos += Character.getNumericValue(c);
         }
         return sumaDigitos / 5.0;
     }
