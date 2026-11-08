@@ -4,7 +4,6 @@ import modelo.*;
 
 import java.util.ArrayList;
 import java.util.List;
-//oztia puta chaval
 
 public class BacktrackingUADA {
     private List<Solucion> mejoresSoluciones = new ArrayList<>();
@@ -12,7 +11,7 @@ public class BacktrackingUADA {
     private Arista[][] grafo;
     private List<Vertice> listaVertices;
 
-    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, int bateriaActual, int tiempoAcumulado) {
+    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, int tiempoAcumulado) {
 
         if (posicionActual == 0 && lno.isEmpty() && !listaMovimientos.isEmpty()) {
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
@@ -31,8 +30,8 @@ public class BacktrackingUADA {
 
                 while (indiceTransporte < movimientosPosibles.size()) {
                     TipoMovimiento movimiento = movimientosPosibles.get(indiceTransporte);
-                    int bateriaGastada = funcBateriaGastada(aristaActual.getTiempoBase(), movimiento);
-                    int bateriaRestante = bateriaActual - bateriaGastada;
+                    double bateriaGastada = calcularBateriaGastada(aristaActual.getTiempoBase(), movimiento);
+                    double bateriaRestante = bateriaActual - bateriaGastada;
 
                     if (bateriaRestante > 0) {
                         int taNuevo = tiempoAcumulado + aristaActual.getTiempoBase();
@@ -50,8 +49,8 @@ public class BacktrackingUADA {
                             eraObligatorio = true;
                         }
 
-                        int bateriaRecarga = verticeDestino.calcularRecargaBateria();
-                        int baNuevo = bateriaRestante + bateriaRecarga;
+                        double bateriaRecarga = verticeDestino.calcularRecargaBateria();
+                        double baNuevo = bateriaRestante + bateriaRecarga;
                         Movimiento nuevoMov = new Movimiento(listaVertices.get(posicionActual), verticeDestino, movimiento, bateriaGastada, taNuevo);
                         listaMovimientos.add(nuevoMov);
                         backtrackingPrincipal(i, lno, listaMovimientos, baNuevo, taNuevo);
@@ -96,9 +95,17 @@ public class BacktrackingUADA {
         }
     }
 
-    private int funcBateriaGastada(int tiempoBase, TipoMovimiento mov) {
-        return 0;
+    private double calcularBateriaGastada(int tiempoBase, TipoMovimiento mov) {
+        double consumoCaminando = tiempoBase / 60.0;
+        switch (mov){
+            case CAMINANDO:
+                return consumoCaminando;
+            case PATAS_ARRIBA:
+                return consumoCaminando * 0.45;
+            case SALTANDO:
+                return consumoCaminando * 2.2;
+        }
+        throw new IllegalArgumentException("Movimiento desconocido");
     }
-
 }
 

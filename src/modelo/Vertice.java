@@ -42,7 +42,7 @@ public class Vertice {
         return true;
     }
 
-    public int calcularRecargaBateria() {
+    public double calcularRecargaBateria() {
         if (!esAula)
             return 0;
         int sumaDigitos = 0;
@@ -51,7 +51,7 @@ public class Vertice {
                 sumaDigitos += Character.getNumericValue(c);
             }
         }
-        return sumaDigitos / 5;
+        return sumaDigitos / 5.0;
     }
 
     public String getNombre() {

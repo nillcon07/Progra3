@@ -118,7 +118,7 @@ public class LectorMapa {
         return new Mapa(vertices, grafo, inicio);
     }
 
-    // Revisa que esten todos los campos y que ninguno este vacio.
+    // Revisa que esten todos los campos y que ninguno este vacio
     private static void validarCampos(String[] datos, int cantidad) {
         if (datos.length != cantidad)
             throw new IllegalArgumentException(datos[0] + " requiere " + cantidad + " campos, recibidos: " + datos.length);
@@ -126,21 +126,21 @@ public class LectorMapa {
             if (dato.isEmpty()) throw new IllegalArgumentException("Hay un campo vacio.");
     }
 
-    // Busca el indice del lugar por su nombre. Si no existe, lanza un error.
+    // Busca el indice del lugar por su nombre. Si no existe, lanza un error
     private static int buscadorIndice(Map<String, Integer> indices, String nombre) {
         Integer indice = indices.get(nombre);
         if (indice == null) throw new IllegalArgumentException("Lugar inexistente: " + nombre);
         return indice;
     }
 
-    // Convierte el texto a entero y comprueba que sea mayor o igual a cero.
+    // Convierte el texto a entero y comprueba que sea mayor o igual a cero
     private static int convertirEntero(String dato) {
         int valor = Integer.parseInt(dato);
         if (valor < 0) throw new IllegalArgumentException("Se esperaba un numero no negativo: " + dato);
         return valor;
     }
 
-    // Convierte 1 en true y 0 en false. No acepta otros valores.
+    // Convierte 1 en true y 0 en false. No acepta otros valores
     private static boolean convertirBooleano(String dato) {
         if (!dato.equals("0") && !dato.equals("1"))
             throw new IllegalArgumentException("Se esperaba 0 o 1: " + dato);
