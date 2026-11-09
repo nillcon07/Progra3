@@ -20,6 +20,12 @@ public class BacktrackingUADA {
         this.grafo = mapa.getGrafo();
         this.listaVertices = mapa.getVertices();
         this.indiceInicio = mapa.getIndiceInicio();
+
+        Greedy greedyInicial = new Greedy(mapa);
+        Solucion solGreedy = greedyInicial.resolver();
+        if (solGreedy != null) {
+            this.cotaInferior = solGreedy.getTiempoTotal();
+        }
     }
 
     public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, int tiempoAcumulado) {
