@@ -28,7 +28,7 @@ public class BacktrackingUADA {
             return;
         }
 
-        if (mejoresSoluciones.isEmpty()) {
+        if (mejoresSoluciones.isEmpty() && !listaMovimientos.isEmpty()) {
             Vertice vActual = listaVertices.get(posicionActual);
             Vertice vInicio = listaVertices.get(indiceInicio);
 
