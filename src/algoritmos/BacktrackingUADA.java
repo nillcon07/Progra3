@@ -13,6 +13,7 @@ public class BacktrackingUADA {
     private int indiceInicio;
     private List<Movimiento> mejorRutaTruncada = new ArrayList<>();
     private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
+    private boolean solucionCompletaEncontrada = false;
 
     public BacktrackingUADA(Mapa mapa) {
         this.grafo = mapa.getGrafo();
@@ -95,6 +96,7 @@ public class BacktrackingUADA {
     }
 
     private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, int tiempoTotal) {
+        solucionCompletaEncontrada = true;
         Solucion nuevaSolucion = new Solucion(new ArrayList<>(rutaActual), tiempoTotal);
 
         if (mejoresSoluciones.isEmpty()) {
@@ -157,6 +159,10 @@ public class BacktrackingUADA {
             return fallback;
         }
         return mejoresSoluciones;
+    }
+
+    public boolean isSolucionCompletaEncontrada() {
+        return solucionCompletaEncontrada;
     }
 }
 
