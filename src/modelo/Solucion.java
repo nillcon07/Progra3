@@ -4,14 +4,14 @@ import java.util.List;
 
 public class Solucion {
     private List<Movimiento> ruta;
-    private double tiempoTotal;
+    private int tiempoTotal;
 
-    public Solucion(List<Movimiento> ruta, double tiempoTotal) {
+    public Solucion(List<Movimiento> ruta, int tiempoTotal) {
         this.ruta = ruta;
         this.tiempoTotal = tiempoTotal;
     }
 
-    public double getTiempoTotal() {
+    public int getTiempoTotal() {
         return tiempoTotal;
     }
 

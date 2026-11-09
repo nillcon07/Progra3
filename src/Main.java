@@ -32,7 +32,7 @@ public class Main {
             List<Vertice> obligatorios = new ArrayList<>(mapa.getObligatorios());
             List<Movimiento> movimientos = new ArrayList<>();
             double bateriaInicial = 100.0;
-            double tiempoInicial = 0.0;
+            int tiempoInicial = 0;
 
             backtracking.backtrackingPrincipal(
                     posicionInicial,
@@ -51,8 +51,8 @@ public class Main {
 
                 for (Solucion solucion : mejoresRutas) {
                     System.out.println();
-                    System.out.println("Esta es la solucion N° " + numeroSolucion);
-                    System.out.println("Cuyo tiempo total fue de: " + solucion.getTiempoTotal());
+                    System.out.println("Esta es la mejor solucion N° " + numeroSolucion);
+                    System.out.println("Cuyo tiempo total fue de: " + solucion.getTiempoTotal() + " Segundos");
 
                     for (Movimiento movimiento : solucion.getRuta()) {
 
@@ -61,7 +61,7 @@ public class Main {
                                         movimiento.getDestino().getNombre() + " | " +
                                         movimiento.getTipoMovimiento() +
                                         " | Tiempo: " + movimiento.getTiempoAcumulado() +
-                                        " Bateria: " + String.format("%.2f",movimiento.getBateriaRestante())
+                                        " Bateria: " + String.format("%.2f",movimiento.getBateriaRestante()) +"%"
                         );
                         if (movimiento.getBateriaRecargada() > 0) {
                             System.out.println("(recargo: +" + String.format("%.2f",movimiento.getBateriaRecargada()) + "%)"

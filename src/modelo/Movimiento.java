@@ -5,12 +5,12 @@ public class Movimiento {
     private Vertice destino;
     private TipoMovimiento tipoMovimiento;
     private double bateriaGastada;
-    private double tiempoAcumulado;
+    private int tiempoAcumulado;
     private double bateriaRestante;
     private double bateriaRecargada;
 
 
-    public Movimiento(Vertice origen, Vertice destino, TipoMovimiento tipoMovimiento, double bateriaGastada, double tiempoAcumulado, double bateriaRestante, double bateriaRecargada) {
+    public Movimiento(Vertice origen, Vertice destino, TipoMovimiento tipoMovimiento, double bateriaGastada, int tiempoAcumulado, double bateriaRestante, double bateriaRecargada) {
         this.origen = origen;
         this.destino = destino;
         this.tipoMovimiento = tipoMovimiento;
@@ -28,11 +28,11 @@ public class Movimiento {
         this.origen = origen;
     }
 
-    public double getTiempoAcumulado() {
+    public int getTiempoAcumulado() {
         return tiempoAcumulado;
     }
 
-    public void setTiempoAcumulado(double tiempoAcumulado) {
+    public void setTiempoAcumulado(int tiempoAcumulado) {
         this.tiempoAcumulado = tiempoAcumulado;
     }
 

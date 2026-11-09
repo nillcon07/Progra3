@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BacktrackingUADA {
     private List<Solucion> mejoresSoluciones = new ArrayList<>();
-    private double cotaInferior = Integer.MAX_VALUE;
+    private int cotaInferior = Integer.MAX_VALUE;
     private Arista[][] grafo;
     private List<Vertice> listaVertices;
     private int indiceInicio;
@@ -18,7 +18,7 @@ public class BacktrackingUADA {
         this.indiceInicio = mapa.getIndiceInicio();
     }
 
-    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, double tiempoAcumulado) {
+    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, int tiempoAcumulado) {
 
         if (posicionActual == indiceInicio && lno.isEmpty() && !listaMovimientos.isEmpty()) {
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
@@ -41,7 +41,7 @@ public class BacktrackingUADA {
                     double bateriaRestante = bateriaActual - bateriaGastada;
 
                     if (bateriaRestante >= 0) {
-                        double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
+                        int taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
                         if (taNuevo >= cotaInferior) {
                             indiceTransporte++;
@@ -78,7 +78,7 @@ public class BacktrackingUADA {
         }
     }
 
-    private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, double tiempoTotal) {
+    private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, int tiempoTotal) {
         Solucion nuevaSolucion = new Solucion(new ArrayList<>(rutaActual), tiempoTotal);
 
         if (mejoresSoluciones.isEmpty()) {
@@ -119,8 +119,8 @@ public class BacktrackingUADA {
         throw new IllegalArgumentException("Movimiento desconocido");
     }
 
-    public double calcularTiempoMov(TipoMovimiento mov, int tiempoBase){
-        double TiempoNuevo;
+    public int calcularTiempoMov(TipoMovimiento mov, int tiempoBase){
+        int TiempoNuevo;
         switch (mov){
             case CAMINANDO:
                 return tiempoBase;
