@@ -83,7 +83,9 @@ public class Greedy {
 
     private void agregarASolucion(Candidato c) {
         Vertice destino = vertices.get(c.destino);
-        recorrido.add(new Movimiento(vertices.get(actual), destino, c.movimiento, c.gasto, c.llegada));
+        double bateriaRecargada = destino.calcularRecargaBateria();
+        double bateriaRestante = bateria - c.gasto + bateriaRecargada;
+        recorrido.add(new Movimiento(vertices.get(actual), destino, c.movimiento, c.gasto, c.llegada, bateriaRestante, bateriaRecargada));
         bateria = bateria - c.gasto + destino.calcularRecargaBateria();
         tiempo = c.llegada;
         visitado[c.destino] = true;
