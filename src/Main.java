@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         args = new String[1];
-        args[0] = "C:/Users/valen/Downloads/mapa_grande.txt"; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
+        args[0] = "C:/Users/valen/Downloads/mapa_grande_sin_solucion.txt"; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
         try {
             Mapa mapa = new LectorMapa().leerMapa(args[0]);
             int conexiones = 0;
@@ -44,9 +44,6 @@ public class Main {
 
             List<Solucion> mejoresRutas = backtracking.getMejoresSoluciones();
 
-            if (mejoresRutas.isEmpty()) {
-                System.out.println("No se encontraron recorridos ni rutas posibles.");
-            } else {
                 if (!backtracking.isSolucionCompletaEncontrada()) {
                     System.out.println("\n==================================================================");
                     System.out.println("AVISO DE CONTINGENCIA: No existe solución completa posible.");
@@ -78,8 +75,6 @@ public class Main {
                     }
                     numeroSolucion++;
                 }
-            }
-
         } catch (IOException e) {
             System.err.println("No se pudo leer el mapa: " + e.getMessage());
         }

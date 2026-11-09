@@ -12,6 +12,7 @@ public class BacktrackingUADA {
     private List<Vertice> listaVertices;
     private int indiceInicio;
     private List<Movimiento> mejorRutaTruncada = new ArrayList<>();
+    private int menosObligatoriosPendientes = Integer.MAX_VALUE;
     private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
     private boolean solucionCompletaEncontrada = false;
 
@@ -28,7 +29,8 @@ public class BacktrackingUADA {
             return;
         }
 
-        if (mejoresSoluciones.isEmpty()) {
+        if (mejoresSoluciones.isEmpty() && !listaMovimientos.isEmpty()) {
+            int obligatoriosPendientes = lno.size();
             Vertice vActual = listaVertices.get(posicionActual);
             Vertice vInicio = listaVertices.get(indiceInicio);
 
@@ -36,7 +38,10 @@ public class BacktrackingUADA {
                     Math.pow(vActual.getPosicionX() - vInicio.getPosicionX(), 2) + Math.pow(vActual.getPosicionY() - vInicio.getPosicionY(), 2)
             );
 
-            if (distanciaActual < menorDistanciaAlObjetivo) {
+            if (obligatoriosPendientes < menosObligatoriosPendientes
+                    || (obligatoriosPendientes == menosObligatoriosPendientes
+                    && distanciaActual < menorDistanciaAlObjetivo)) {
+                menosObligatoriosPendientes = obligatoriosPendientes;
                 menorDistanciaAlObjetivo = distanciaActual;
                 mejorRutaTruncada = new ArrayList<>(listaMovimientos);
             }
@@ -74,7 +79,7 @@ public class BacktrackingUADA {
                         }
 
                         double bateriaRecarga = verticeDestino.calcularRecargaBateria();
-                        double espacioRecargaDispo = 100 - bateriaRestante;
+                        double espacioRecargaDispo = 100.0 - bateriaRestante;
 
                         if (bateriaRecarga > espacioRecargaDispo) {bateriaRecarga = espacioRecargaDispo;}
 
