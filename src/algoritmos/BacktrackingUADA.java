@@ -58,7 +58,7 @@ public class BacktrackingUADA {
 
                         double bateriaRecarga = verticeDestino.calcularRecargaBateria();
                         double baNuevo = bateriaRestante + bateriaRecarga;
-                        Movimiento nuevoMov = new Movimiento(listaVertices.get(posicionActual), verticeDestino, movimiento, bateriaGastada, taNuevo);
+                        Movimiento nuevoMov = new Movimiento(listaVertices.get(posicionActual), verticeDestino, movimiento, bateriaGastada, taNuevo, baNuevo, bateriaRecarga);
                         listaMovimientos.add(nuevoMov);
                         backtrackingPrincipal(i, lno, listaMovimientos, baNuevo, taNuevo);
                         listaMovimientos.remove(listaMovimientos.size() - 1);
@@ -126,6 +126,9 @@ public class BacktrackingUADA {
                 return tiempoBase * 2;
         }
         throw new IllegalArgumentException("Movimiento desconocido");
+    }
+    public List<Solucion> getMejoresSoluciones() {
+        return mejoresSoluciones;
     }
 }
 
