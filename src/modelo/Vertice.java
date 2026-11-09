@@ -32,6 +32,8 @@ public class Vertice {
 
     public List<VentanaTiempo> getVentanas() { return List.copyOf(ventanas); }
 
+
+
     public boolean estaDisponible(double tiempo) {
         if (prohibido != 0) return false;
         for (VentanaTiempo ventana : ventanas)
@@ -53,11 +55,11 @@ public class Vertice {
         return nombre;
     }
 
-    public int getX() {
+    public int getPosicionX() {
         return x;
     }
 
-    public int getY() {
+    public int getPosicionY() {
         return y;
     }
 

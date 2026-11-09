@@ -11,6 +11,8 @@ public class BacktrackingUADA {
     private Arista[][] grafo;
     private List<Vertice> listaVertices;
     private int indiceInicio;
+    private List<Movimiento> mejorRutaTruncada = new ArrayList<>();
+    private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
 
     public BacktrackingUADA(Mapa mapa) {
         this.grafo = mapa.getGrafo();
@@ -23,6 +25,20 @@ public class BacktrackingUADA {
         if (posicionActual == indiceInicio && lno.isEmpty() && !listaMovimientos.isEmpty()) {
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
             return;
+        }
+
+        if (mejoresSoluciones.isEmpty()) {
+            Vertice vActual = listaVertices.get(posicionActual);
+            Vertice vInicio = listaVertices.get(indiceInicio);
+
+            double distanciaActual = Math.sqrt(
+                    Math.pow(vActual.getPosicionX() - vInicio.getPosicionX(), 2) + Math.pow(vActual.getPosicionY() - vInicio.getPosicionY(), 2)
+            );
+
+            if (distanciaActual < menorDistanciaAlObjetivo) {
+                menorDistanciaAlObjetivo = distanciaActual;
+                mejorRutaTruncada = new ArrayList<>(listaMovimientos);
+            }
         }
 
         int totalVertices = listaVertices.size();
@@ -132,6 +148,14 @@ public class BacktrackingUADA {
         throw new IllegalArgumentException("Movimiento desconocido");
     }
     public List<Solucion> getMejoresSoluciones() {
+        if (mejoresSoluciones.isEmpty() && !mejorRutaTruncada.isEmpty()) {
+            int tiempoTruncado = mejorRutaTruncada.get(mejorRutaTruncada.size() - 1).getTiempoAcumulado();
+            Solucion solucionTruncada = new Solucion(new ArrayList<>(mejorRutaTruncada), tiempoTruncado);
+
+            List<Solucion> fallback = new ArrayList<>();
+            fallback.add(solucionTruncada);
+            return fallback;
+        }
         return mejoresSoluciones;
     }
 }
