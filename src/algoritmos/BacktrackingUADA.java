@@ -10,10 +10,17 @@ public class BacktrackingUADA {
     private int cotaInferior = Integer.MAX_VALUE;
     private Arista[][] grafo;
     private List<Vertice> listaVertices;
+    private int indiceInicio;
+
+    public BacktrackingUADA(Mapa mapa) {
+        this.grafo = mapa.getGrafo();
+        this.listaVertices = mapa.getVertices();
+        this.indiceInicio = mapa.getIndiceInicio();
+    }
 
     public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, int tiempoAcumulado) {
 
-        if (posicionActual == 0 && lno.isEmpty() && !listaMovimientos.isEmpty()) {
+        if (posicionActual == indiceInicio && lno.isEmpty() && !listaMovimientos.isEmpty()) {
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
             return;
         }
