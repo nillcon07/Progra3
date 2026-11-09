@@ -64,7 +64,7 @@ public class Main {
                                         " Bateria: " + String.format("%.2f",movimiento.getBateriaRestante())
                         );
                         if (movimiento.getBateriaRecargada() > 0) {
-                            System.out.println("(recargo: +" + movimiento.getBateriaRecargada() + "%)"
+                            System.out.println("(recargo: +" + String.format("%.2f",movimiento.getBateriaRecargada()) + "%)"
                             );
                         }
 
