@@ -47,7 +47,7 @@ public class LectorMapa {
                             indices.put(nombre, vertices.size()); //para que la lista vertices y el Map indices estén alineados, de modo que el mismo número identifique al mismo lugar en las dos estructuras
                             vertices.add(new Vertice(nombre, x, y, aula, obligatorio, prohibido));
                             break;
-                        case "ARISTA":
+                        case "ARISTA": //// Se leen primero los LUGAR y se dejan para después ARISTA, VENTANA e INICIO porque estos requieren que todos los vértices ya existan
                             pendientes.add(datos);
                             numerosLinea.add(numero);
                             break;
