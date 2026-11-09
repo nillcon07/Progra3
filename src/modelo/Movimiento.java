@@ -5,10 +5,10 @@ public class Movimiento {
     private Vertice destino;
     private TipoMovimiento tipoMovimiento;
     private double bateriaGastada;
-    private int tiempoAcumulado;
+    private double tiempoAcumulado;
 
     // Constructor
-    public Movimiento(Vertice origen, Vertice destino, TipoMovimiento tipoMovimiento, double bateriaGastada, int tiempoAcumulado) {
+    public Movimiento(Vertice origen, Vertice destino, TipoMovimiento tipoMovimiento, double bateriaGastada, double tiempoAcumulado) {
         this.origen = origen;
         this.destino = destino;
         this.tipoMovimiento = tipoMovimiento;
