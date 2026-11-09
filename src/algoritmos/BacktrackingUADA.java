@@ -74,9 +74,11 @@ public class BacktrackingUADA {
                         }
 
                         double bateriaRecarga = verticeDestino.calcularRecargaBateria();
-                        double espacioRecargaDispo = 100 - bateriaRestante;
+                        double espacioRecargaDispo = 100.0 - bateriaRestante;
 
-                        if (bateriaRecarga > espacioRecargaDispo) {bateriaRecarga = espacioRecargaDispo;}
+                        if (bateriaRecarga > espacioRecargaDispo) {
+                            bateriaRecarga = espacioRecargaDispo;
+                        }
 
                         double baNuevo = bateriaRestante + bateriaRecarga;
                         Movimiento nuevoMov = new Movimiento(listaVertices.get(posicionActual), verticeDestino, movimiento, bateriaGastada, taNuevo, baNuevo, bateriaRecarga);
