@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         args = new String[1];
-        args[0] = ""; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
+        args[0] = "C:/Users/valen/Downloads/mapa_grande.txt"; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
         try {
             Mapa mapa = new LectorMapa().leerMapa(args[0]);
             int conexiones = 0;
@@ -57,14 +57,14 @@ public class Main {
                     for (Movimiento movimiento : solucion.getRuta()) {
 
                         System.out.println(
-                                movimiento.getOrigen().getNombre() + "->" +
-                                        movimiento.getDestino().getNombre() + "|" +
+                                movimiento.getOrigen().getNombre() + " -> " +
+                                        movimiento.getDestino().getNombre() + " | " +
                                         movimiento.getTipoMovimiento() +
-                                        "| Tiempo" + movimiento.getTiempoAcumulado() +
-                                        "ඞා Bateria: " + movimiento.getBateriaRestante()
+                                        " | Tiempo: " + movimiento.getTiempoAcumulado() +
+                                        " Bateria: " + String.format("%.2f",movimiento.getBateriaRestante())
                         );
                         if (movimiento.getBateriaRecargada() > 0) {
-                            System.out.println("(recargo+" + movimiento.getBateriaRecargada() + ")"
+                            System.out.println("(recargo: +" + movimiento.getBateriaRecargada() + "%)"
                             );
                         }
 
