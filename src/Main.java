@@ -45,31 +45,36 @@ public class Main {
             List<Solucion> mejoresRutas = backtracking.getMejoresSoluciones();
 
             if (mejoresRutas.isEmpty()) {
-                System.out.println("No se encontraron recorridos completos");
+                System.out.println("No se encontraron recorridos ni rutas posibles.");
             } else {
+                if (!backtracking.isSolucionCompletaEncontrada()) {
+                    System.out.println("\n==================================================================");
+                    System.out.println("AVISO DE CONTINGENCIA: No existe solución completa posible.");
+                    System.out.println("Mostrando la ruta donde Uada estuvo más cerca del objetivo.");
+                    System.out.println("==================================================================");
+                } else {
+                    System.out.println("\n Se encontraron soluciones completas con éxito");
+                }
+
                 int numeroSolucion = 1;
 
                 for (Solucion solucion : mejoresRutas) {
                     System.out.println();
-                    System.out.println("Esta es la mejor solucion N° " + numeroSolucion);
-                    System.out.println("Cuyo tiempo total fue de: " + solucion.getTiempoTotal() + " Segundos");
+                    System.out.println("--- Opción / Ruta N° " + numeroSolucion + " ---");
+                    System.out.println("Cuyo tiempo total (o acumulado parcial) fue de: " + solucion.getTiempoTotal() + " Segundos");
 
                     for (Movimiento movimiento : solucion.getRuta()) {
-
                         System.out.println(
                                 movimiento.getOrigen().getNombre() + " -> " +
                                         movimiento.getDestino().getNombre() + " | " +
                                         movimiento.getTipoMovimiento() +
                                         " | Tiempo: " + movimiento.getTiempoAcumulado() +
-                                        " Bateria: " + String.format("%.2f",movimiento.getBateriaRestante()) +"%"
+                                        " Bateria: " + String.format("%.2f", movimiento.getBateriaRestante()) + "%"
                         );
                         if (movimiento.getBateriaRecargada() > 0) {
-                            System.out.println("(recargo: +" + String.format("%.2f",movimiento.getBateriaRecargada()) + "%)"
-                            );
+                            System.out.println("(recargo: +" + String.format("%.2f", movimiento.getBateriaRecargada()) + "%)");
                         }
-
                         System.out.println();
-
                     }
                     numeroSolucion++;
                 }
