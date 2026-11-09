@@ -9,10 +9,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Indica la ruta del mapa como argumento del programa.");
-            return;
-        }
+        args = new String[1];
+        args[0] = ""; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
         try {
             Mapa mapa = new LectorMapa().leerMapa(args[0]);
             int conexiones = 0;
