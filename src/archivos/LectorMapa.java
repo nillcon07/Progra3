@@ -44,7 +44,7 @@ public class LectorMapa {
                             int y = Integer.parseInt(datos[4]);
                             boolean obligatorio = convertirBooleano(datos[5]);
                             int prohibido = convertirBooleano(datos[6]) ? 1 : 0;
-                            indices.put(nombre, vertices.size());
+                            indices.put(nombre, vertices.size()); //para que la lista vertices y el Map indices estén alineados, de modo que el mismo número identifique al mismo lugar en las dos estructuras
                             vertices.add(new Vertice(nombre, x, y, aula, obligatorio, prohibido));
                             break;
                         case "ARISTA":
