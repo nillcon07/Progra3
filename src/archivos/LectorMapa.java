@@ -64,7 +64,7 @@ public class LectorMapa {
                             throw new IllegalArgumentException("Tipo de registro desconocido: " + datos[0]);
                     }
                 } catch (IllegalArgumentException e) {
-                    throw new FormatoMapaException(numero, e);
+                    throw new FormatoMapaException(numero,e.getMessage());
                 }
             }
         }
@@ -112,7 +112,7 @@ public class LectorMapa {
                         break;
                 }
             } catch (IllegalArgumentException e) {
-                throw new FormatoMapaException(numerosLinea.get(i), e);
+                throw new FormatoMapaException(numerosLinea.get(i), e.getMessage());
             }
         }
         if (inicio == -1) throw new FormatoMapaException("Falta el registro INICIO.");
