@@ -15,7 +15,7 @@ public class BacktrackingUADA {
     private int menosObligatoriosPendientes = Integer.MAX_VALUE;
     private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
     private boolean solucionCompletaEncontrada = false;
-    private int[] tiemposMinimosAlInicio;
+    private double[] tiemposMinimosAlInicio;
 
 
     public BacktrackingUADA(Mapa mapa) {
@@ -23,9 +23,9 @@ public class BacktrackingUADA {
         this.listaVertices = mapa.getVertices();
         this.indiceInicio = mapa.getIndiceInicio();
 
-        int[][] matrizCompleta = calcularMatrizFloyd();
+        double[][] matrizCompleta = calcularMatrizFloyd();
 
-        this.tiemposMinimosAlInicio = new int[listaVertices.size()];
+        this.tiemposMinimosAlInicio = new double[listaVertices.size()];
         for (int i = 0; i < listaVertices.size(); i++) {
             this.tiemposMinimosAlInicio[i] = matrizCompleta[i][indiceInicio];
         }
@@ -84,8 +84,9 @@ public class BacktrackingUADA {
                             continue;
                         }
 
-                        int tiempoEstimadoRegreso = tiemposMinimosAlInicio[i];
-                        if (taNuevo + tiempoEstimadoRegreso >= cotaInferior) {
+                        double tiempoEstimadoRegreso = tiemposMinimosAlInicio[i];
+                        if (Double.isFinite(cotaInferior)
+                                && taNuevo + tiempoEstimadoRegreso >= cotaInferior) {
                             indiceTransporte++;
                             continue;
                         }
@@ -189,30 +190,25 @@ public class BacktrackingUADA {
         return solucionCompletaEncontrada;
     }
 
-    private int[][] calcularMatrizFloyd() {
+    private double[][] calcularMatrizFloyd() {
         int n = listaVertices.size();
-        int[][] dist = new int[n][n];
-        int infinito = Integer.MAX_VALUE / 2; // Previene overflow al sumar
+        double[][] dist = new double[n][n];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j) {
-                    dist[i][j] = 0;
+                    dist[i][j] = 0.0;
                 } else if (grafo[i][j] != null) {
-                    dist[i][j] = grafo[i][j].getTiempoBase() / 2;
+                    dist[i][j] = grafo[i][j].getTiempoBase() / 2.0;
                 } else {
-                    dist[i][j] = infinito;
+                    dist[i][j] = Double.POSITIVE_INFINITY;
                 }
             }
         }
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (dist[i][k] != infinito && dist[k][j] != infinito) {
-                        if (dist[i][k] + dist[k][j] < dist[i][j]) {
-                            dist[i][j] = dist[i][k] + dist[k][j];
-                        }
-                    }
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
