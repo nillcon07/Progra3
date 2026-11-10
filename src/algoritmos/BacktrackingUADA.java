@@ -64,7 +64,19 @@ public class BacktrackingUADA {
 
             if (aristaActual != null && !verticeDestino.estaVisitado() && verticeDestino.getProhibido() == 0) {
                 int indiceTransporte = 0;
-                List<TipoMovimiento> movimientosPosibles = aristaActual.getMovimientosPosibles();
+                List<TipoMovimiento> movimientosPosibles = new ArrayList<>();
+
+                TipoMovimiento[] orden = {
+                        TipoMovimiento.SALTANDO,
+                        TipoMovimiento.CAMINANDO,
+                        TipoMovimiento.PATAS_ARRIBA
+                };
+
+                for (TipoMovimiento movimiento : orden) {
+                    if (aristaActual.getMovimientosPosibles().contains(movimiento)) {
+                        movimientosPosibles.add(movimiento);
+                    }
+                }
 
                 while (indiceTransporte < movimientosPosibles.size()) {
                     TipoMovimiento movimiento = movimientosPosibles.get(indiceTransporte);
