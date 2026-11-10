@@ -29,7 +29,9 @@ public class LectorMapa {
             while ((linea = lector.readLine()) != null) {
                 numero++;
                 linea = linea.trim();
-                if (linea.isEmpty() || linea.startsWith("#")) {continue;}
+                if (linea.isEmpty() || linea.startsWith("#")) {
+                    continue;
+                }
                 String[] datos = linea.split(";", -1); //limit -1 para que en caso de dejar campo vacio se guarde un espacio vacio
                 for (int i = 0; i < datos.length; i++) datos[i] = datos[i].trim();
                 try {
