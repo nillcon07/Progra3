@@ -29,11 +29,6 @@ public class BacktrackingUADA {
         for (int i = 0; i < listaVertices.size(); i++) {
             this.tiemposMinimosAlInicio[i] = matrizCompleta[i][indiceInicio];
         }
-        Greedy greedyInicial = new Greedy(mapa);
-        Solucion solGreedy = greedyInicial.resolver();
-        if (solGreedy != null) {
-            this.cotaInferior = solGreedy.getTiempoTotal();
-        }
     }
 
     public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, double tiempoAcumulado) {
