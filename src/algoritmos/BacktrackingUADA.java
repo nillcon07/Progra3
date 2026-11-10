@@ -76,7 +76,7 @@ public class BacktrackingUADA {
                     double bateriaGastada = calcularBateriaGastada(aristaActual.getTiempoBase(), movimiento);
                     double bateriaRestante = bateriaActual - bateriaGastada;
 
-                    if (bateriaRestante >= 0) {
+                    if (bateriaRestante > 0) {
                         double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
                         if (taNuevo >= cotaInferior) {
@@ -199,7 +199,7 @@ public class BacktrackingUADA {
                 if (i == j) {
                     dist[i][j] = 0;
                 } else if (grafo[i][j] != null) {
-                    dist[i][j] = grafo[i][j].getTiempoBase();
+                    dist[i][j] = grafo[i][j].getTiempoBase() / 2;
                 } else {
                     dist[i][j] = infinito;
                 }
