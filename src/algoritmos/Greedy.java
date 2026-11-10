@@ -17,7 +17,7 @@ public class Greedy {
     private int obligatoriosPendientes;
     private int actual;
     private double bateria;
-    private int tiempo;
+    private double tiempo;
     private final List<Movimiento> recorrido = new ArrayList<>();
 
     public Greedy(Mapa mapa) {
@@ -46,7 +46,7 @@ public class Greedy {
             if (i != inicio && vertices.get(i).esObligatorio()) obligatoriosPendientes++;
         actual = inicio;
         bateria = BATERIA_INICIAL;
-        tiempo = 0;
+        tiempo = 0.0;
         recorrido.clear();
     }
 
@@ -93,7 +93,7 @@ public class Greedy {
         actual = c.destino;
     }
 
-    static int tiempoMovimiento(int tiempoBase, TipoMovimiento mov) {
+    static double tiempoMovimiento(double tiempoBase, TipoMovimiento mov) {
         switch (mov) {
             case CAMINANDO:    return tiempoBase;
             case SALTANDO:     return tiempoBase / 2;
@@ -115,15 +115,15 @@ public class Greedy {
 
     public List<Movimiento> getRecorrido() { return List.copyOf(recorrido); }
     public double getBateria() { return bateria; }
-    public int getTiempo() { return tiempo; }
+    public double getTiempo() { return tiempo; }
 
     private static class Candidato {
         final int destino;
         final TipoMovimiento movimiento;
-        final int llegada;
+        final double llegada;
         final double gasto;
 
-        Candidato(int destino, TipoMovimiento movimiento, int llegada, double gasto) {
+        Candidato(int destino, TipoMovimiento movimiento, double llegada, double gasto) {
             this.destino = destino;
             this.movimiento = movimiento;
             this.llegada = llegada;

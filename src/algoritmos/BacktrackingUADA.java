@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BacktrackingUADA {
     private List<Solucion> mejoresSoluciones = new ArrayList<>();
-    private int cotaInferior = Integer.MAX_VALUE;
+    private double cotaInferior = Double.POSITIVE_INFINITY;
     private Arista[][] grafo;
     private List<Vertice> listaVertices;
     private int indiceInicio;
@@ -28,7 +28,7 @@ public class BacktrackingUADA {
         }
     }
 
-    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, int tiempoAcumulado) {
+    public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, double tiempoAcumulado) {
 
         if (posicionActual == indiceInicio && lno.isEmpty() && !listaMovimientos.isEmpty()) {
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
@@ -69,7 +69,7 @@ public class BacktrackingUADA {
                     double bateriaRestante = bateriaActual - bateriaGastada;
 
                     if (bateriaRestante >= 0) {
-                        int taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
+                        double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
                         if (taNuevo >= cotaInferior) {
                             indiceTransporte++;
@@ -106,7 +106,7 @@ public class BacktrackingUADA {
         }
     }
 
-    private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, int tiempoTotal) {
+    private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, double tiempoTotal) {
         solucionCompletaEncontrada = true;
         Solucion nuevaSolucion = new Solucion(new ArrayList<>(rutaActual), tiempoTotal);
 
@@ -148,8 +148,7 @@ public class BacktrackingUADA {
         throw new IllegalArgumentException("Movimiento desconocido");
     }
 
-    public int calcularTiempoMov(TipoMovimiento mov, int tiempoBase){
-        int TiempoNuevo;
+    public double calcularTiempoMov(TipoMovimiento mov, double tiempoBase){
         switch (mov){
             case CAMINANDO:
                 return tiempoBase;
@@ -162,7 +161,7 @@ public class BacktrackingUADA {
     }
     public List<Solucion> getMejoresSoluciones() {
         if (mejoresSoluciones.isEmpty() && !mejorRutaTruncada.isEmpty()) {
-            int tiempoTruncado = mejorRutaTruncada.get(mejorRutaTruncada.size() - 1).getTiempoAcumulado();
+            double tiempoTruncado = mejorRutaTruncada.get(mejorRutaTruncada.size() - 1).getTiempoAcumulado();
             Solucion solucionTruncada = new Solucion(new ArrayList<>(mejorRutaTruncada), tiempoTruncado);
 
             List<Solucion> fallback = new ArrayList<>();

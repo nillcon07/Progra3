@@ -32,7 +32,7 @@ public class Main {
             List<Vertice> obligatorios = new ArrayList<>(mapa.getObligatorios());
             List<Movimiento> movimientos = new ArrayList<>();
             double bateriaInicial = 100.0;
-            int tiempoInicial = 0;
+            double tiempoInicial = 0.0;
 
             backtracking.backtrackingPrincipal(
                     posicionInicial,
