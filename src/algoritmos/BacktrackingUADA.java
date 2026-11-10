@@ -16,6 +16,7 @@ public class BacktrackingUADA {
     private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
     private boolean solucionCompletaEncontrada = false;
     private double[] tiemposMinimosAlInicio;
+    private long nodosExplorados = 0;
 
 
     public BacktrackingUADA(Mapa mapa) {
@@ -32,9 +33,15 @@ public class BacktrackingUADA {
     }
 
     public void backtrackingPrincipal(int posicionActual, List<Vertice> lno, List<Movimiento> listaMovimientos, double bateriaActual, double tiempoAcumulado) {
+        nodosExplorados++;
+        int nivel = listaMovimientos.size();
+        String origen = listaVertices.get(posicionActual).getNombre();
+        log(nivel, "ENTRO a " + origen + " | tiempo=" + tiempoAcumulado + " | bateria=" + bateriaActual + " | obligatorios pendientes=" + lno.size());
 
         if (posicionActual == indiceInicio && lno.isEmpty() && !listaMovimientos.isEmpty()) {
+            log(nivel, "SOLUCION COMPLETA: volvi al inicio y visite todos los obligatorios. Tiempo=" + tiempoAcumulado);
             actualizarTop3MejoresOpciones(listaMovimientos, tiempoAcumulado);
+            log(nivel, "TERMINO esta rama y regreso a la llamada anterior.");
             return;
         }
 
@@ -53,16 +60,15 @@ public class BacktrackingUADA {
                 menosObligatoriosPendientes = obligatoriosPendientes;
                 menorDistanciaAlObjetivo = distanciaActual;
                 mejorRutaTruncada = new ArrayList<>(listaMovimientos);
+                log(nivel, "GUARDO RUTA PARCIAL: pendientes=" + obligatoriosPendientes + " | distancia al inicio=" + distanciaActual);
             }
         }
 
         int totalVertices = listaVertices.size();
 
         for (int i = 0; i < totalVertices; i++) {
-
             Arista aristaActual = grafo[posicionActual][i];
             Vertice verticeDestino = listaVertices.get(i);
-
             if (i == indiceInicio && !lno.isEmpty()) continue;
 
             if (aristaActual != null && !verticeDestino.estaVisitado() && verticeDestino.getProhibido() == 0) {
@@ -78,23 +84,29 @@ public class BacktrackingUADA {
                 for (TipoMovimiento movimiento : orden) {
                     if (aristaActual.getMovimientosPosibles().contains(movimiento)) {
                         movimientosPosibles.add(movimiento);
+                    } else {
+                        log(nivel, "DESCARTO " + movimiento + " hacia " + verticeDestino.getNombre() + ": modo no permitido.");
                     }
                 }
+                if (movimientosPosibles.isEmpty()) log(nivel, "DESCARTO " + verticeDestino.getNombre() + ": no tiene modos permitidos.");
 
                 while (indiceTransporte < movimientosPosibles.size()) {
                     TipoMovimiento movimiento = movimientosPosibles.get(indiceTransporte);
                     double bateriaGastada = calcularBateriaGastada(aristaActual.getTiempoBase(), movimiento);
                     double bateriaRestante = bateriaActual - bateriaGastada;
+                    log(nivel, "PRUEBO " + origen + " -> " + verticeDestino.getNombre() + " con " + movimiento + " | bateria al llegar=" + bateriaRestante);
 
                     if (bateriaRestante > 0) {
                         double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
                         if (!verticeDestino.estaDisponible(taNuevo)) {
+                            log(nivel, "PODA POR HORARIO: " + verticeDestino.getNombre() + " no esta disponible al llegar en " + taNuevo);
                             indiceTransporte++;
                             continue; // Si a ese tiempo el vértice está cerrado/no disponible, saltamos al siguiente movimiento
                         }
 
                         if (taNuevo >= cotaInferior) {
+                            log(nivel, "PODA POR TIEMPO: " + taNuevo + " >= " + cotaInferior);
                             indiceTransporte++;
                             continue;
                         }
@@ -102,6 +114,7 @@ public class BacktrackingUADA {
                         double tiempoEstimadoRegreso = tiemposMinimosAlInicio[i];
                         if (Double.isFinite(cotaInferior)
                                 && taNuevo + tiempoEstimadoRegreso >= cotaInferior) {
+                            log(nivel, "PODA POR FLOYD: tiempo " + taNuevo + " + regreso minimo " + tiempoEstimadoRegreso + " >= limite " + cotaInferior);
                             indiceTransporte++;
                             continue;
                         }
@@ -112,6 +125,7 @@ public class BacktrackingUADA {
                         if (verticeDestino.esObligatorio() && lno.contains(verticeDestino)) {
                             lno.remove(verticeDestino);
                             eraObligatorio = true;
+                            log(nivel, "QUITO de pendientes a " + verticeDestino.getNombre());
                         }
 
                         double bateriaRecarga = verticeDestino.calcularRecargaBateria();
@@ -120,20 +134,39 @@ public class BacktrackingUADA {
                         if (bateriaRecarga > espacioRecargaDispo) {bateriaRecarga = espacioRecargaDispo;}
 
                         double baNuevo = bateriaRestante + bateriaRecarga;
+                        log(nivel, "RECARGA en " + verticeDestino.getNombre() + ": " + bateriaRecarga + " | bateria final=" + baNuevo);
                         Movimiento nuevoMov = new Movimiento(listaVertices.get(posicionActual), verticeDestino, movimiento, bateriaGastada, taNuevo, baNuevo, bateriaRecarga);
                         listaMovimientos.add(nuevoMov);
+                        log(nivel, "AVANZO a " + verticeDestino.getNombre() + " con " + movimiento + " | tiempo=" + taNuevo + " | marco visitado y agrego el movimiento.");
                         backtrackingPrincipal(i, lno, listaMovimientos, baNuevo, taNuevo);
+                        log(nivel, "VOLVIO la llamada desde " + verticeDestino.getNombre() + ". Quito el ultimo movimiento.");
                         listaMovimientos.remove(listaMovimientos.size() - 1);
 
                         if (eraObligatorio) {
                             lno.add(verticeDestino);
+                            log(nivel, "REPONGO como pendiente a " + verticeDestino.getNombre());
                         }
                         verticeDestino.setVisitado(false);
+                        log(nivel, "RETROCEDO a " + origen + ": desmarque " + verticeDestino.getNombre() + " | tiempo=" + tiempoAcumulado + " | bateria=" + bateriaActual + " | pendientes=" + lno.size());
+                    } else {
+                        log(nivel, "PODA POR BATERIA: quedaria " + bateriaRestante + "; debe ser mayor que cero.");
                     }
                     indiceTransporte++;
                 }
+            } else if (aristaActual == null) {
+                continue; // Sin conexion: pasa al siguiente destino sin imprimir.
+            } else if (verticeDestino.estaVisitado()) {
+                log(nivel, "DESCARTO " + verticeDestino.getNombre() + ": ya esta visitado en este recorrido.");
+            } else {
+                log(nivel, "DESCARTO " + verticeDestino.getNombre() + ": esta prohibido.");
             }
         }
+        log(nivel, "TERMINE las alternativas desde " + origen + ". Finaliza esta llamada.");
+    }
+
+    // Cada movimiento de la ruta agrega un nivel de sangria.
+    private void log(int nivel, String mensaje) {
+        System.out.println("  ".repeat(nivel) + mensaje);
     }
 
     private void actualizarTop3MejoresOpciones(List<Movimiento> rutaActual, double tiempoTotal) {
@@ -157,12 +190,15 @@ public class BacktrackingUADA {
         }
 
         if (mejoresSoluciones.size() > 3) {
+            log(rutaActual.size(), "QUITO la cuarta solucion del top 3. Tiempo=" + mejoresSoluciones.get(3).getTiempoTotal());
             mejoresSoluciones.remove(3); // O remove(mejoresSoluciones.size() - 1)
         }
 
         if (mejoresSoluciones.size() == 3) {
             this.cotaInferior = mejoresSoluciones.get(2).getTiempoTotal();
+            log(rutaActual.size(), "LIMITE DEL TOP 3: " + cotaInferior);
         }
+        log(rutaActual.size(), "SOLUCIONES GUARDADAS: " + mejoresSoluciones.size());
     }
 
     private double calcularBateriaGastada(int tiempoBase, TipoMovimiento mov) {
@@ -205,7 +241,6 @@ public class BacktrackingUADA {
 
         return mejoresSoluciones;
     }
-
     public boolean isSolucionCompletaEncontrada() {
         return solucionCompletaEncontrada;
     }
@@ -234,6 +269,9 @@ public class BacktrackingUADA {
         }
 
         return dist;
+    }
+    public long getNodosExplorados() {
+        return nodosExplorados;
     }
 }
 
