@@ -74,6 +74,11 @@ public class BacktrackingUADA {
                     if (bateriaRestante > 0) {
                         double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
+                        if (!verticeDestino.estaDisponible(taNuevo)) {
+                            indiceTransporte++;
+                            continue; // Si a ese tiempo el vértice está cerrado/no disponible, saltamos al siguiente movimiento
+                        }
+
                         if (taNuevo >= cotaInferior) {
                             indiceTransporte++;
                             continue;
