@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         args = new String[1];
-        args[0] = "C:/Users/valen/Downloads/mapa_con_solucion.txt"; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
+        args[0] = "D:/Facultad/archivos/mapa_grande.txt"; //ACA VA EL ARCHIVO, IR MODIFICANDO CUANDO SE PRUEBA CON OTROS ARCHIVOS//
         try {
             Mapa mapa = new LectorMapa().leerMapa(args[0]);
             int conexiones = 0;
@@ -41,6 +41,8 @@ public class Main {
                     bateriaInicial,
                     tiempoInicial
             );
+
+            System.out.println("Total de nodos explorados: " + backtracking.getNodosExplorados());
 
             List<Solucion> mejoresRutas = backtracking.getMejoresSoluciones();
 
