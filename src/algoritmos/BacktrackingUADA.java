@@ -15,12 +15,20 @@ public class BacktrackingUADA {
     private int menosObligatoriosPendientes = Integer.MAX_VALUE;
     private double menorDistanciaAlObjetivo = Double.MAX_VALUE;
     private boolean solucionCompletaEncontrada = false;
+    private int[] tiemposMinimosAlInicio;
+
 
     public BacktrackingUADA(Mapa mapa) {
         this.grafo = mapa.getGrafo();
         this.listaVertices = mapa.getVertices();
         this.indiceInicio = mapa.getIndiceInicio();
 
+        int[][] matrizCompleta = calcularMatrizFloyd();
+
+        this.tiemposMinimosAlInicio = new int[listaVertices.size()];
+        for (int i = 0; i < listaVertices.size(); i++) {
+            this.tiemposMinimosAlInicio[i] = matrizCompleta[i][indiceInicio];
+        }
         Greedy greedyInicial = new Greedy(mapa);
         Solucion solGreedy = greedyInicial.resolver();
         if (solGreedy != null) {
@@ -72,6 +80,12 @@ public class BacktrackingUADA {
                         double taNuevo = tiempoAcumulado + calcularTiempoMov(movimiento, aristaActual.getTiempoBase());
 
                         if (taNuevo >= cotaInferior) {
+                            indiceTransporte++;
+                            continue;
+                        }
+
+                        int tiempoEstimadoRegreso = tiemposMinimosAlInicio[i];
+                        if (taNuevo + tiempoEstimadoRegreso >= cotaInferior) {
                             indiceTransporte++;
                             continue;
                         }
@@ -153,9 +167,9 @@ public class BacktrackingUADA {
             case CAMINANDO:
                 return tiempoBase;
             case PATAS_ARRIBA:
-                return tiempoBase / 2;
-            case SALTANDO:
                 return tiempoBase * 2;
+            case SALTANDO:
+                return tiempoBase / 2;
         }
         throw new IllegalArgumentException("Movimiento desconocido");
     }
@@ -173,6 +187,37 @@ public class BacktrackingUADA {
 
     public boolean isSolucionCompletaEncontrada() {
         return solucionCompletaEncontrada;
+    }
+
+    private int[][] calcularMatrizFloyd() {
+        int n = listaVertices.size();
+        int[][] dist = new int[n][n];
+        int infinito = Integer.MAX_VALUE / 2; // Previene overflow al sumar
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    dist[i][j] = 0;
+                } else if (grafo[i][j] != null) {
+                    dist[i][j] = grafo[i][j].getTiempoBase();
+                } else {
+                    dist[i][j] = infinito;
+                }
+            }
+        }
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (dist[i][k] != infinito && dist[k][j] != infinito) {
+                        if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                            dist[i][j] = dist[i][k] + dist[k][j];
+                        }
+                    }
+                }
+            }
+        }
+
+        return dist;
     }
 }
 
