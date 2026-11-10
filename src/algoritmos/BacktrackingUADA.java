@@ -59,8 +59,11 @@ public class BacktrackingUADA {
         int totalVertices = listaVertices.size();
 
         for (int i = 0; i < totalVertices; i++) {
+
             Arista aristaActual = grafo[posicionActual][i];
             Vertice verticeDestino = listaVertices.get(i);
+
+            if (i == indiceInicio && !lno.isEmpty()) continue;
 
             if (aristaActual != null && !verticeDestino.estaVisitado() && verticeDestino.getProhibido() == 0) {
                 int indiceTransporte = 0;
@@ -187,14 +190,19 @@ public class BacktrackingUADA {
         throw new IllegalArgumentException("Movimiento desconocido");
     }
     public List<Solucion> getMejoresSoluciones() {
-        if (mejoresSoluciones.isEmpty() && !mejorRutaTruncada.isEmpty()) {
-            double tiempoTruncado = mejorRutaTruncada.get(mejorRutaTruncada.size() - 1).getTiempoAcumulado();
-            Solucion solucionTruncada = new Solucion(new ArrayList<>(mejorRutaTruncada), tiempoTruncado);
+        if (mejoresSoluciones.isEmpty()) {
+            double tiempoTruncado = 0.0;
 
-            List<Solucion> fallback = new ArrayList<>();
-            fallback.add(solucionTruncada);
-            return fallback;
+            if (!mejorRutaTruncada.isEmpty()) {
+                tiempoTruncado = mejorRutaTruncada.getLast().getTiempoAcumulado();
+            }
+
+            List<Solucion> retroceso = new ArrayList<>();
+            retroceso.add(new Solucion(new ArrayList<>(mejorRutaTruncada), tiempoTruncado));
+
+            return retroceso;
         }
+
         return mejoresSoluciones;
     }
 
